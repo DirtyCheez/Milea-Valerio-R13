@@ -1,20 +1,49 @@
 // Lab1-p1.cpp : This file contains the 'main' function. Program execution begins and ends there.
 //
 
-#include <iostream>
+#include <stdio.h>;
+using namespace std;
+
+int myatoi(char* nr, int nrc)
+{
+    int p = 1, rez = 0;;
+    for (int i = nrc - 1; i >= 0; i--)
+    {
+        rez += p * (nr[i] - '0');
+        p *= 10;
+    }
+    return rez;
+}
 
 int main()
 {
-    std::cout << "Hello World!\n";
+    int s = 0, nrc = 0;
+    char nr[10], c;
+    FILE* f;
+
+    if (fopen_s(&f, "ini.txt", "r") == 0)
+    {
+        c = fgetc(f);
+        while (c != EOF)
+        {
+            if (c >= '0' && c <= '9')
+            {
+                nr[nrc] = c;
+                nrc++;
+            }
+            if (c == '\n')
+            {
+                s += myatoi(nr, nrc);
+                nrc = 0;
+            }
+            c = fgetc(f);
+        }
+        s += myatoi(nr, nrc);
+        printf("%d\n", s);
+        return 0;
+    }
+    printf("Fisierul nu a fost gasit.\n");
+    return 1;
+
 }
 
-// Run program: Ctrl + F5 or Debug > Start Without Debugging menu
-// Debug program: F5 or Debug > Start Debugging menu
-
-// Tips for Getting Started: 
-//   1. Use the Solution Explorer window to add/manage files
-//   2. Use the Team Explorer window to connect to source control
-//   3. Use the Output window to see build output and other messages
-//   4. Use the Error List window to view errors
-//   5. Go to Project > Add New Item to create new code files, or Project > Add Existing Item to add existing code files to the project
-//   6. In the future, to open this project again, go to File > Open > Project and select the .sln file
